@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学生列表页面</title>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script>
+        $(function () {
+            //1,去后台查询登录的用户名
+            $.get("user/findLoginUser",function (data) {
+                $("#loginUser").html("欢迎您！"+data.username);
+            },"json");
+            //2,去后台查询所有的学生信息
+            $.get("student/findAllStudent",function (data) {
+                var trs='<tr>\n' +
+                    '        <th>用户名</th>\n' +
+                    '        <th>年龄</th>\n' +
+                    '        <th>地址</th>\n' +
+                    '        <th>出生日期</th>\n' +
+                    '        <th>操作</th>\n' +
+                    '    </tr>';
+                for (var i=0;i<data.length;i++){
+                    var tr=' <tr>' +
+                        '        <td>'+data[i].sname+'</td>' +
+                        '        <td>'+data[i].age+'</td>' +
+                        '        <td>'+data[i].address+'</td>' +
+                        '        <td>'+data[i].birthday+'</td>' +
+                        '        <td><a href="updateStudent.html?sid='+data[i].sid+'">修改</a>' +
+                        '<a href="student/deleteStudent?id='+data[i].sid+'">删除</a></td>' +
+                        '    </tr>';
+                    trs+=tr;
+                }
+                //整体拼接到table中
+                $("#studentList").html(trs);
+            },"json");
+        })
+    </script>
+
+</head>
+<body>
+<h1 id="loginUser"></h1>
+<a href="user/exitUser">退出登录</a>
+<a href="addStudent.html">新增</a>
+<table border="1px solid" align="center" id="studentList">
+
+</table>
+
+</body>
+</html>

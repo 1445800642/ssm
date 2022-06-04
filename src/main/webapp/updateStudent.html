@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改学生信息</title>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script>
+        $(function () {
+            /*第二次进来的location：sid=1&sname=小刘&age=222&address=北京&birthday=2022-05-01*/
+            var sid = location.search.split("=")[1];
+            if(sid.includes("&")){
+                sid =  sid.split("&")[0];
+            }
+            //根据id查询指定用户
+            $.get("student/findStudentById", {"sid": sid}, function (data) {
+                $("[name='sname']").val(data.sname);
+                $("[name='age']").val(data.age);
+                $("[name='address']").val(data.address);
+                $("[name='birthday']").val(data.birthday);
+                $("[name='sid']").val(data.sid);
+            });
+            //真正的修改
+            $("#updateForm").submit(function () {
+                alert($("[name='sid']").val()+"==========");
+                $.post("student/updateStudent", $(this).serialize(), function (data) {
+                    alert("修改成功");
+                    location.href = "studentList.html";
+                })
+            })
+        });
+
+
+    </script>
+</head>
+<body>
+<form id="updateForm">
+    <!--隐藏域-->
+    <table border="1 px solid" align="center">
+        <input type="hidden" name="sid">
+        <tr>
+            <td>姓名：</td>
+            <td><input type="text" name="sname"></td>
+        </tr>
+        <tr>
+            <td>年龄:</td>
+            <td><input type="text" name="age"></td>
+        </tr>
+        <tr>
+            <td>住址：</td>
+            <td><input type="text" name="address"></td>
+        </tr>
+        <tr>
+            <td>出生日期：</td>
+            <td><input type="date" name="birthday"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="修改"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

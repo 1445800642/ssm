@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加学生</title>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script>
+        $(function () {
+            $("#addForm").submit(function () {
+                $.post("student/addStudent",$(this).serialize(),function (data) {
+                    alert(data);
+                    if (data){
+                        alert(1234)
+                        location.href="/studentList.html"
+                    }else {
+                        alert("新增失败")
+                    }
+                },"text");
+            })
+        })
+    </script>
+</head>
+<body>
+<form id="addForm">
+    <table border="1px solid" align="center">
+        <tr>
+            <td>姓名：</td>
+            <td><input type="text" name="sname" placeholder="请输入姓名"></td>
+        </tr>
+        <tr>
+            <td>年龄：</td>
+            <td><input type="text" name="age" placeholder="请输入年龄"></td>
+        </tr>
+        <tr>
+            <td>住址：</td>
+            <td><input type="text" name="address" placeholder="请输入地址"></td>
+        </tr>
+        <tr>
+            <td>出生日期：</td>
+            <td><input type="date" name="birthday" ></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="注册"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
