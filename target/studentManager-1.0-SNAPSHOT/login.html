@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆页面</title>
+    <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+    <script>
+        $(function () {
+            //设置用户名和密码的失去焦点事件
+            $("[name='username']").blur(checkName);
+            $("[name='password']").blur(checkPwd);
+
+            //设置form表单的提交事件
+            $("#loginForm").submit(function () {
+                if (checkName()&&checkPwd()) {  //满足条件，可以提交
+                    $("#msg").html("");
+                    //ajax访问后台
+                    $.get("user/login",$(this).serialize(),function (data) {
+                        //如果data为true 进入studentList.html
+                        if (data=="true") {
+                            alert("马上进入学生列表页面");
+                            location.href="studentList.html";
+
+                        }else{   //否则还在当前页面
+                            $("#msg").html("请检查用户名和密码");
+                        }
+                    },"text");
+                }else {
+                    $("#msg").html("请检查用户名和密码");
+                }
+            });
+        })
+
+        //用户名不能为空的验证
+        function  checkName() {
+            var  username=$("[name='username']").val();
+            if (username==null||username==""){
+                $("#msg").html("用户名不能为空！")
+                return false;
+            }else {
+                $("#msg").html("");
+                return true;
+            }
+        }
+
+        //密码不能为空的验证
+        function  checkPwd() {
+            var  password=$("[name='password']").val();
+            if (password==null||password==""){
+                $("#msg").html("密码不能为空！")
+                return false;
+            }else {
+                $("#msg").html("");
+                return true;
+            }
+        }
+    </script>
+
+</head>
+<body>
+<form  method="post" id="loginForm">
+    <table border="1px solid" align="center">
+        <tr>
+            <td>用户名：</td>
+            <td><input type="text" name="username" placeholder="请输入用户名"></td>
+        </tr>
+        <tr>
+            <td>密码：</td>
+            <td><input type="password" name="password" placeholder="请输入密码"></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="登录"></td>
+            <td><span id="msg" style="color: red">提示信息</span></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
